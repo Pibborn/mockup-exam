@@ -1,0 +1,47 @@
+\documentclass[13pt, a4paper]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\renewcommand{\baselinestretch}{1.2}
+
+\begin{document}
+    \begin{center}
+        \vspace{0.4in}
+        \makebox[\textwidth]{Name:\enspace\hrulefill} \\
+        \vspace{0.5in}
+        \Large\textbf{MADAS - Machine Learning - Mockup Exam}
+    \end{center}
+    
+\begin{questions}
+    \question{Evvia}
+    \begin{parts}
+       \part Evviva?
+       \part{extra}
+    \end{parts}
+
+
+    \question{\Large Lab Exercises}
+    
+    Complete the two Python files \verb|ex1_clustering| and \verb|ex2_classification|. Please notice that your scripts should be working by imputing the line \verb|python3 ex1_clustering| (or \verb|python3 ex2_classification|) in the Anaconda Prompt - we recommend you avoid using notebooks at this stage.
+    
+    \begin{parts}
+        \part \verb|ex1_clustering.py| requires you to use the Breast Cancer dataset to train various clustering models of your choosing.
+        \begin{subparts}
+            \subpart Read the dataset description file \verb|breast-cancer-wisconsin.names| carefully;
+            \subpart Preprocess the data;
+            \subpart Train various models, including at least one DBSCAN model;
+            \subpart Use matplotlib to plot the NMI scores of each model;
+            \subpart Optimize the $\epsilon$ parameter in DBSCAN (\verb|eps| in the scikit-learn class) to obtain the best NMI you can; please include at least 5 different possible values for this parameter.
+        \end{subparts} 
+        \part In the \verb|ex2_classification.py| exercise, you are expected to complete a script that creates a neural network model from a Python class, also training it on the breast cancer dataset.
+        \begin{subparts}
+            \subpart Preprocess the data (using the same Python functions you might have written to solve exercise 1 by including them in this file will be worth extra points);
+            \subpart Read and understand the \verb|MultiLayerNetwork| class you will find in the \verb|utils.py| file;
+            \subpart Complete the \verb|build_train()| function in the \verb|MyNetwork| class so that it activates the \verb|self.output| tensor using the sigmoid function and then compute the cross-entropy loss on the resulting output. You may not use predefined Tensorflow losses \linebreak (such as \verb|softmax_cross_entropy_with_logits(...)| or similar functions);
+            \subpart Complete the ``main function" (lines 39 onwards) so that it trains a multi-layer network and reports (prints) accuracy on a separate test set each epoch. You may use the pre-defined \verb|train_epoch(...)| class function to this purpose.
+        \end{subparts}
+    \end{parts}
+    
+\end{questions}
+    
+    
+\end{document}
