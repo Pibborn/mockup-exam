@@ -47,7 +47,7 @@ class MultiLayerNetwork():
         pos = self.target_ph * tf.log( activation )
         neg = (1.0 - self.target_ph) * tf.log( 1.0 - activation )
         per_example_error = tf.reduce_sum(pos + neg,1)
-        result = tf.reduce_mean( per_example_error )
+        result = -tf.reduce_mean( per_example_error )
 
         self.loss_function = result
 
@@ -100,5 +100,5 @@ if __name__ == '__main__':
     target = OneHotEncoder(sparse=False).fit_transform(target.reshape(-1, 1))
     X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=0.2, random_state=33)
     multilayer = MultiLayerNetwork(X_train, y_train)
-    multilayer.train_epoch(X_test, y_test, num_epochs=100)
+    multilayer.train_epoch(X_test, y_test, num_epochs=1000)
     ###
