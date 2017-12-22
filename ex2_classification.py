@@ -7,9 +7,6 @@ from sklearn.preprocessing import OneHotEncoder
 
 class MyNetwork(MultiLayerNetwork):
 
-    def __init__(self, data, target):
-        super().__init__(data, target)
-
     def build_loss(self):
         # your work here...
         #
