@@ -10,8 +10,17 @@ class MyNetwork(MultiLayerNetwork):
     def __init__(self, data, target):
         super().__init__(data, target)
 
-    def build_train(self):
+    def build_loss(self):
         # your work here...
+        #
+        # You can assume:
+        #   - self.output is a tensor representing the output units.
+        #       It has shape (?, 2).
+        #   - self.target_ph is a tensor representing the target balues.
+        #       It has shape (?, 2).
+        #
+        # Example:
+        return tf.reduce_mean(tf.norm(self.output - self.target_ph, axis=1))
 
     def build_evaluate(self):
         super().build_evaluate()
@@ -28,3 +37,15 @@ if __name__ == '__main__':
     # target = OneHotEncoder(sparse=False).fit_transform(target.reshape(-1, 1))
 
     # your work here...
+<<<<<<< Updated upstream
+=======
+    data = all_data[:, 1:-1]
+    target = all_data[:, -1]
+    data = preprocess_data(data)
+    target = clean_labels(target)
+    target = OneHotEncoder(sparse=False).fit_transform(target.reshape(-1, 1))
+    X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=0.2, random_state=33)
+    multilayer = MyNetwork(X_train, y_train)
+    multilayer.train_epoch(X_test, y_test, num_epochs=200)
+    ###
+>>>>>>> Stashed changes

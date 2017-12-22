@@ -50,11 +50,14 @@ class MultiLayerNetwork():
             self.output = tf.matmul(previous_layer_output, output_layer_weights) + output_layer_biases
         return self.output
 
+    def build_loss(self):
+        return tf.nn.softmax_cross_entropy_with_logits(labels=self.target_ph, logits=self.output)
+
     def build_train(self):
         if self.training == None:
-            self.loss_function = tf.nn.softmax_cross_entropy_with_logits(labels=self.target_ph, logits=self.output)
+            self.loss_function = self.build_loss()
             self.training = tf.train.GradientDescentOptimizer(self.learning_rate).minimize(self.loss_function)
-        return self.training 
+        return self.training
 
     def build_evaluate(self):
         if self.evaluation == None:
@@ -76,10 +79,10 @@ class MultiLayerNetwork():
             for j in range(num_batches):
                 batch_data = data_train[j * self.batch_size:(j+1) * self.batch_size]
                 batch_target = target_train[j * self.batch_size:(j+1) * self.batch_size]
-                self.session.run([self.training, self.loss_function], 
+                self.session.run([self.training, self.loss_function],
                                  {self.data_ph: batch_data, self.target_ph: batch_target})
-            accuracy = self.session.run([self.evaluation], {self.data_ph: X_test, self.target_ph: y_test})
-            print('Epoch {}; accuracy {}'.format(i, accuracy))
+            accuracy, loss = self.session.run([self.evaluation, self.loss_function], {self.data_ph: X_test, self.target_ph: y_test})
+            print('Epoch {}; Loss {}; accuracy {}'.format(i, loss, accuracy))
 
 
 
