@@ -35,8 +35,18 @@
         \part In the \verb|ex2_classification.py| exercise, you are expected to complete a script that creates a neural network model, also training it on the breast cancer dataset.
         \begin{subparts}
             \subpart Preprocess the data (if you import the functions you have written to solve exercise 1 instead of copy/pasting them, you will be awarded extra points);
-            \subpart Complete the \verb|build_train()| function in the \verb|MyNetwork| class so that it activates the \verb|self.output| tensor using the sigmoid function and then compute the cross-entropy loss on the resulting output. You may not use predefined Tensorflow losses \linebreak (such as \verb|softmax_cross_entropy_with_logits(...)| or similar functions);
-            \subpart Complete the ``main function" (lines 39 onwards) so that it trains a multi-layer network and reports (prints) accuracy on a separate test set each epoch. You may use the pre-defined \verb|train_epoch(...)| class function to this purpose.
+            \subpart Complete the \verb|build_loss()| function in the \verb|MyNetwork| class so that:
+            \begin{enumerate}
+                \item it applies the sigmoid activation function to the \verb|self.output| tensor;
+                \item it computes the cross-entropy loss on the resulting output;
+                \item returns the resulting tensor to its caller.
+            \end{enumerate}
+
+             You must not use the predefined Tensorflow losses (such as \verb|softmax_cross_entropy_with| \verb|_logits(...)| or similar functions);
+            \subpart Complete the ``main function" (lines 23 onwards) so that it trains a multi-layer network to solve the problem described above.
+
+            You may want to open a python session  from the command line, import the \verb|utils| module,  and use the command \verb|help(utils.MultiLayerNetwork)| to access the
+            documentation of methods that you can use.
         \end{subparts}
     \end{parts}
 
