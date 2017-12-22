@@ -2,11 +2,7 @@ from utils import load_data, shuffle_data, MultiLayerNetwork
 import tensorflow as tf
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
-###
-from ex1_clustering import clean_labels, preprocess_data
-from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_iris
-###
+
 
 
 class MyNetwork(MultiLayerNetwork):
