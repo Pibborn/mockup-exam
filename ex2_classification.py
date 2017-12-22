@@ -12,22 +12,25 @@ from sklearn.datasets import load_iris
 class MyNetwork(MultiLayerNetwork):
 
     def __init__(self, data, target):
-        super.__init__(data, target)
+        super().__init__(data, target)
 
     def build_train(self):
         # your work here...
-        pass
+        activation = tf.sigmoid(self.output)
+        pos = self.target_ph * tf.log( activation )
+        neg = (1.0 - self.target_ph) * tf.log( 1.0 - activation )
+        per_example_error = tf.reduce_sum(pos + neg,1)
+        result = -tf.reduce_mean( per_example_error )
+        self.loss_function = result
 
     def build_evaluate(self):
-        super.build_evaluation()
+        super().build_evaluate()
 
-    def build_inference(self):
-        super.build_inference()
+    def build_train(self):
+        super().build_train()
 
     def train_epoch(self, X_test, y_test, num_epochs=1):
-        super.train_epoch(X_test, y_test, num_epochs=num_epochs)
-
-
+        super().train_epoch(X_test, y_test, num_epochs=num_epochs)
 
 if __name__ == '__main__':
     tf.reset_default_graph()
@@ -43,6 +46,6 @@ if __name__ == '__main__':
     target = clean_labels(target)
     target = OneHotEncoder(sparse=False).fit_transform(target.reshape(-1, 1))
     X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=0.2, random_state=33)
-    multilayer = MultiLayerNetwork(X_train, y_train)
+    multilayer = MyNetwork(X_train, y_train)
     multilayer.train_epoch(X_test, y_test, num_epochs=100)
     ###
