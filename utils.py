@@ -21,6 +21,17 @@ class MultiLayerNetwork():
 
     def __init__(self, data, target, batch_size=8, hidden_layer_sizes=[100, 30, 10],
                  learning_rate=0.001):
+        """
+        Builds a new custom MultiLayerNetwork.
+
+        data: training examples
+        target: labels corresponding to examples in `data`
+        batch_size: size of each mini batch
+        hidden_layer_sizes: a vector containing the number of neurons to be included
+            in each hidden layer. The default ([100,30,10]) builds three layers
+            containing respectively 100, 30, and 10 neurons.
+        learning_rate: the learning rate to be used.
+        """
         self.learning_rate = learning_rate
         self.data = data
         self.target = target
@@ -34,7 +45,7 @@ class MultiLayerNetwork():
         self.training = None
         self.evaluation = None
 
-    def build_inference(self):
+    def _build_inference(self):
         if self.output == None:
             input_layer_weights = tf.Variable(tf.truncated_normal([self.num_features, self.hidden_layer_sizes[0]]))
             input_layer_bias = tf.Variable(tf.constant(.1, shape=[self.hidden_layer_sizes[0]]))
@@ -51,25 +62,36 @@ class MultiLayerNetwork():
         return self.output
 
     def build_loss(self):
+        """
+        Returns the loss function evaluated on self.output and self.target_ph
+        """
         return tf.nn.softmax_cross_entropy_with_logits(labels=self.target_ph, logits=self.output)
 
-    def build_train(self):
+    def _build_train(self):
         if self.training == None:
-            self.loss_function = self.build_loss()
+            self.loss_function = self._build_loss()
             self.training = tf.train.GradientDescentOptimizer(self.learning_rate).minimize(self.loss_function)
         return self.training
 
-    def build_evaluate(self):
+    def _build_evaluate(self):
         if self.evaluation == None:
             self.evaluation = tf.reduce_mean(
                 tf.cast(tf.equal(tf.argmax(self.target_ph, 1), tf.argmax(self.output, 1)), tf.float32))
         return self.evaluation
 
     def train(self, X_test, y_test, num_epochs=1):
+        """
+            it trains for `num_epochs` the neural network.
+
+            X_test: examples to be used to report the error committed
+               by the network during training
+            y_test: labels corresponding to examples in X_test
+            num_epochs: number of epochs to be used for training
+        """
         if self.output == None:
-            self.build_inference()
-            self.build_train()
-            self.build_evaluate()
+            self._build_inference()
+            self._build_train()
+            self._build_evaluate()
             self.session = tf.Session()
             self.session.run(tf.global_variables_initializer())
             self.session.run(tf.local_variables_initializer())
