@@ -65,7 +65,7 @@ class MultiLayerNetwork():
                 tf.cast(tf.equal(tf.argmax(self.target_ph, 1), tf.argmax(self.output, 1)), tf.float32))
         return self.evaluation
 
-    def train_epoch(self, X_test, y_test, num_epochs=1):
+    def train(self, X_test, y_test, num_epochs=1):
         if self.output == None:
             self.build_inference()
             self.build_train()
