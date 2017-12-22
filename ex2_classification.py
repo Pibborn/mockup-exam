@@ -42,11 +42,21 @@ class MultiLayerNetwork():
 
         return self.output
 
+    def build_loss_function(self):
+        activation = tf.sigmoid(self.output)
+        pos = self.target_ph * tf.log( activation )
+        neg = (1.0 - self.target_ph) * tf.log( 1.0 - activation )
+        per_example_error = tf.reduce_sum(pos + neg,1)
+        result = tf.reduce_mean( per_example_error )
+
+        self.loss_function = result
+
     def build_train(self):
         if self.training == None:
-            self.loss_function = tf.nn.softmax_cross_entropy_with_logits(labels=self.target_ph, logits=self.output)
+            self.build_loss_function()
+            #self.loss_function = tf.nn.softmax_cross_entropy_with_logits(labels=self.target_ph, logits=self.output)
             self.training = tf.train.GradientDescentOptimizer(self.learning_rate).minimize(self.loss_function)
-        return self.training 
+        return self.training
 
     def build_evaluate(self):
         if self.evaluation == None:
@@ -68,17 +78,17 @@ class MultiLayerNetwork():
             for j in range(num_batches):
                 batch_data = data_train[j * self.batch_size:(j+1) * self.batch_size]
                 batch_target = target_train[j * self.batch_size:(j+1) * self.batch_size]
-                _, loss = self.session.run([self.training, self.loss_function], 
+                _, loss = self.session.run([self.training, self.loss_function],
                                  {self.data_ph: batch_data, self.target_ph: batch_target})
-            accuracy, loss, out, target = self.session.run([self.evaluation, self.loss_function, 
+            accuracy, loss, out, target = self.session.run([self.evaluation, self.loss_function,
                                                             self.output, self.target_ph], {self.data_ph: X_test, self.target_ph: y_test})
-            print('Epoch {}; accuracy {}'.format(i, accuracy))
+            print('Epoch {}; Loss {}; accuracy {}'.format(i, loss, accuracy))
 
 if __name__ == '__main__':
     tf.reset_default_graph()
     all_data = load_data('breast-cancer-wisconsin.data')
     #data, target = load_iris(True)
-    
+
     # remember to one-hot encode your data:
     # target = OneHotEncoder(sparse=False).fit_transform(target.reshape(-1, 1))
 
